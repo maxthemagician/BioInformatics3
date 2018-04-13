@@ -1,5 +1,5 @@
 from AbstractNetwork import AbstractNetwork
-from .Node import Node
+from Node import Node
 import random # you will need it :-)
 
 class RandomNetwork(AbstractNetwork):

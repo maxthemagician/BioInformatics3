@@ -6,8 +6,14 @@ class AbstractNetwork:
         Creates empty nodelist and call createNetwork of the extending class
         """
         self.nodes = {}
-        self.maxDegree = 0
+        self.mdegree = 0
         self.__createNetwork__(amount_nodes, amount_links)
+        for node in self.nodes:
+            degree = self.nodes[node].nodes.__len__()
+            if(degree>self.mdegree):
+                self.mdegree = degree
+
+
 
     def __createNetwork__(self, amount_nodes, amount_links):
         """
@@ -20,14 +26,15 @@ class AbstractNetwork:
         Appends node to network
         """
         self.nodes[node.id] = node
-        if(self.maxDegree < node.degree()):
-            self.maxDegree = node.degree()
+        if(self.mdegree < node.degree()):
+            self.mdegree = node.degree()
 
     def maxDegree(self):
         """
         Returns the maximum degree in this network
         """
-        return self.maxDegree
+        print(self.mdegree)
+        return int(self.mdegree)
 
     def size(self):
         """

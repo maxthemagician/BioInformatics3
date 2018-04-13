@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import numpy as np
 
 def plotDistributionComparison(histograms, legend, title):
     '''
@@ -24,3 +25,4 @@ def getPoissonDistributionHistogram(num_nodes, num_links, k):
     '''
     Generates a Poisson distribution histogram up to k
     '''
+    return np.random.poisson()
