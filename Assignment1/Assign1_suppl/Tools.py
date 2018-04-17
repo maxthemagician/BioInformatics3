@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-import numpy as np
+import math
 
 def plotDistributionComparison(histograms, legend, title):
     '''
@@ -12,8 +12,8 @@ def plotDistributionComparison(histograms, legend, title):
         plt.plot(range(len(h)), h, marker = 'x')
     
     # remember: never forget labels! :-)
-    plt.xlabel('')
-    plt.ylabel('')
+    plt.xlabel('Degree of k')
+    plt.ylabel('Density')
     
     # you don't have to do something here
     plt.legend(legend)
@@ -25,11 +25,15 @@ def getPoissonDistributionHistogram(num_nodes, num_links, k):
     '''
     Generates a Poisson distribution histogram up to k
     '''
-    lamda = 2 * num_links / num_nodes
-    n = num_nodes * (num_nodes-1) / 2
-    n = int(n) + 1
-    hist = [0] * n
-    for i in range(0, n):
-        hist[i] = np.random.poisson(lamda, i)
+    lam = 2 * num_links / num_nodes
+    res = [0]*k
+    for i in range(0, k):
+        res[i] = poisson(lam, i)
+    return res
 
-    return hist
+def poisson(lam, k):
+
+    if(k == 0):
+        return math.exp(-lam)
+    else:
+        return (lam/k * poisson(lam,k-1))

@@ -14,12 +14,12 @@ class RandomNetwork(AbstractNetwork):
         random.seed()
 
         for i in range(0, amount_nodes):
-            node = Node(i)
-            AbstractNetwork.appendNode(self, node=node)
+            AbstractNetwork.appendNode(self, node=Node(i))
 
+        size = AbstractNetwork.size(self)-1
         for i in range(0, amount_links):
-            k1 = random.randint(0, AbstractNetwork.size(self)-1)
-            k2 = random.randint(0, AbstractNetwork.size(self)-1)
+            k1 = random.randint(0, size)
+            k2 = random.randint(0, size)
             n1 = AbstractNetwork.getNode(self, k1)
             n2 = AbstractNetwork.getNode(self, k2)
             n1.addLinkTo(n2)

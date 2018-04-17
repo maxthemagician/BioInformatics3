@@ -9,15 +9,16 @@ plot2 = [(20000,5000),(20000,17000),(20000,40000),(20000,70000)]
 plot_data = []
 plot_legend = []
 for nodes, edges in plot1:
-    print(nodes, edges)
     # build random network
     rand_net = RandomNetwork(nodes, edges)
     rand_degree = DegreeDistribution(rand_net).getNormalizedDistribution()
+
     plot_data.append(rand_degree)
     plot_legend.append("r:"+str(nodes)+"/"+str(edges))
     
     # build Poisson
     poisson_degree = Tools.getPoissonDistributionHistogram(nodes, edges, len(rand_degree))
+
     plot_data.append(poisson_degree)
     plot_legend.append("p:"+str(nodes)+"/"+str(edges))
 

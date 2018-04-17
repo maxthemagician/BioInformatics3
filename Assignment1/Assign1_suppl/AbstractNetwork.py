@@ -45,13 +45,15 @@ class AbstractNetwork:
         '''
         Any string-representation of the network (something simply is enough)
         '''
-        s = ""
+        s = " "
+        '''
         for node in self.nodes:
             s = s + "{ " + str(node) + " }"
             s = s + " -> { "
             for k in self.nodes[node].nodes:
                 s = s + str(k) + " "
             s = s + "}\n"
+        '''
         return s
 
     def getNode(self, identifier):

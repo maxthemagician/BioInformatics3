@@ -16,7 +16,5 @@ class DegreeDistribution:
         '''
         Returns the computed normalized distribution
         '''
-        hist_nom = self.hist
         num = numpy.sum(self.hist)
-        hist_nom = hist_nom / num
-        return hist_nom
+        return [i / num for i in self.hist]
