@@ -1,12 +1,21 @@
 import matplotlib.pyplot as plt
+import numpy as np
 import math
 
 def plotDistributionComparison(histograms, legend, title):
     '''
     Plots a list of histograms with matching list of descriptions as the legend
     '''
-    # adjust size of elements in histogram 
-        
+    # adjust size of elements in histogram
+    maxlen = 0
+    for h in histograms:
+        if len(h) > maxlen:
+            maxlen = len(h)
+
+    for h in histograms:
+        while len(h) != maxlen:
+            h.append(0.0)
+
     # plots histograms
     for h in histograms:
         plt.plot(range(len(h)), h, marker = 'x')
