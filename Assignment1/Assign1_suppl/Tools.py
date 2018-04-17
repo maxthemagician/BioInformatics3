@@ -25,4 +25,11 @@ def getPoissonDistributionHistogram(num_nodes, num_links, k):
     '''
     Generates a Poisson distribution histogram up to k
     '''
-    return np.random.poisson()
+    lamda = 2 * num_links / num_nodes
+    n = num_nodes * (num_nodes-1) / 2
+    n = int(n) + 1
+    hist = [0] * n
+    for i in range(0, n):
+        hist[i] = np.random.poisson(lamda, i)
+
+    return hist

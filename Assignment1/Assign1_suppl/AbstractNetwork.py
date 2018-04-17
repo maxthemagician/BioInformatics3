@@ -33,7 +33,6 @@ class AbstractNetwork:
         """
         Returns the maximum degree in this network
         """
-        print(self.mdegree)
         return int(self.mdegree)
 
     def size(self):
