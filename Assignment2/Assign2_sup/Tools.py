@@ -56,15 +56,26 @@ def plotDistributionComparisonLogLog(histograms, legend, title):
     plt.show()
     
 def getScaleFreeDistributionHistogram(gamma, k):
-    '''
-    Generates a Power law distribution histogram with slope gamma up to degree k
-    '''
-    
+
+    histogram = []
+    for i in range(0,k+1):
+        histogram[i] = math.pow(i, -gamma)
+    return histogram
+
 
 def simpleKSdist(histogram_a, histogram_b):
-    '''
-    Simple Kolmogorov-Smirnov distance implementation
-    '''
+
+    a_sum = np.cumsum(histogram_a)
+    b_sum = np.cumsum(histogram_b)
+
+    index_max_deviate = [0,-1]
+    for i in range(0, histogram_a.size()):
+        deviate = abs(a_sum[i] - b_sum[i])
+        if deviate > index_max_deviate[1]:
+            index_max_deviate[0] = i
+            index_max_deviate[1] = deviate
+
+    return index_max_deviate
 
 
 '''
