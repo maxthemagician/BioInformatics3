@@ -65,3 +65,32 @@ def simpleKSdist(histogram_a, histogram_b):
     '''
     Simple Kolmogorov-Smirnov distance implementation
     '''
+
+def plotHumanNetwork(hist):
+    axes = plt.gca()
+    axes.set_xlim([0, 100])
+    plt.plot(hist, marker='x')
+
+    # remember: never forget labels!
+    plt.xlabel('degree')
+    plt.ylabel('P')
+
+    # you don't have to do something stuff here
+    plt.legend(["Human"])
+    plt.title("Plot 1")
+    plt.tight_layout()
+    plt.show()
+
+    axes = plt.gca()
+    axes.set_xlim([0, 2369])
+    plt.plot(hist, marker='x')
+
+    # remember: never forget labels!
+    plt.xlabel('degree')
+    plt.ylabel('P')
+
+    # you don't have to do something stuff here
+    plt.legend(["Human"])
+    plt.title("Plot 2")
+    plt.tight_layout()
+    plt.show()
