@@ -66,6 +66,12 @@ def simpleKSdist(histogram_a, histogram_b):
     Simple Kolmogorov-Smirnov distance implementation
     '''
 
+
+'''
+    Function to plot a the degree distribution of the human interaction network
+    takes hisogram
+    creates two plots, one with a shrunken x-axis, one with all entries
+'''
 def plotHumanNetwork(hist):
     axes = plt.gca()
     axes.set_xlim([0, 100])
@@ -79,7 +85,7 @@ def plotHumanNetwork(hist):
     plt.legend(["Human"])
     plt.title("Plot 1")
     plt.tight_layout()
-    plt.show()
+    plt.savefig("Plot1")
 
     axes = plt.gca()
     axes.set_xlim([0, 2369])
@@ -93,4 +99,4 @@ def plotHumanNetwork(hist):
     plt.legend(["Human"])
     plt.title("Plot 2")
     plt.tight_layout()
-    plt.show()
+    plt.savefig("Plot2")
