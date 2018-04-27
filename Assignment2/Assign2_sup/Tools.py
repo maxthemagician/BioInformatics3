@@ -1,6 +1,9 @@
 import matplotlib.pyplot as plt
 import math
 
+import numpy as np
+
+
 def plotDistributionComparison(histograms, legend, title):
     '''
     Plots a list of histograms with matching list of descriptions as the legend
@@ -57,23 +60,29 @@ def plotDistributionComparisonLogLog(histograms, legend, title):
     
 def getScaleFreeDistributionHistogram(gamma, k):
 
-    histogram = []
-    for i in range(0,k+1):
+    '''
+        function to create Scale Free distribution based on the power law distribution, normalized
+    '''
+    histogram = [0.0] * k
+    for i in range(1,k):
         histogram[i] = math.pow(i, -gamma)
-    return histogram
+    num = np.sum(histogram)
+    return [i / num for i in histogram]
 
 
 def simpleKSdist(histogram_a, histogram_b):
+    '''
+        function to compute the Kolmogorov-Smirnov distance
+    '''
 
     a_sum = np.cumsum(histogram_a)
     b_sum = np.cumsum(histogram_b)
 
-    index_max_deviate = [0,-1]
-    for i in range(0, histogram_a.size()):
+    index_max_deviate = -1
+    for i in range(2, histogram_a.__len__()):   # start at degree 2, because no node can have degree < 2, as we start with 2
         deviate = abs(a_sum[i] - b_sum[i])
-        if deviate > index_max_deviate[1]:
-            index_max_deviate[0] = i
-            index_max_deviate[1] = deviate
+        if deviate > index_max_deviate:
+            index_max_deviate = deviate
 
     return index_max_deviate
 
@@ -96,6 +105,7 @@ def plotHumanNetwork(hist):
     plt.legend(["Human"])
     plt.title("Plot 1")
     plt.tight_layout()
+    plt.show()
     plt.savefig("Plot1")
 
     axes = plt.gca()
@@ -110,4 +120,17 @@ def plotHumanNetwork(hist):
     plt.legend(["Human"])
     plt.title("Plot 2")
     plt.tight_layout()
+    plt.show()
     plt.savefig("Plot2")
+
+
+def getPoissonDistributionHistogram(num_nodes, num_links, k):
+    '''
+    Generates a Poisson distribution histogram up to k
+    '''
+    lam = 2 * num_links / num_nodes
+    res = [0]*k
+    res[0] = math.exp(-lam)
+    for i in range(1, k):
+        res[i] = lam/k * res[i-1]
+    return res

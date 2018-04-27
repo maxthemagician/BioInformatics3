@@ -1,6 +1,7 @@
 import random
 from AbstractNetwork import AbstractNetwork
 from Node import Node
+import numpy as np
 
 class ScaleFreeNetwork(AbstractNetwork):
     """Scale-free network implementation of AbstractNetwork"""
@@ -28,24 +29,37 @@ class ScaleFreeNetwork(AbstractNetwork):
         n2.addLinkTo(n1)
 
         linked_nodes = [0,0,1,1,2,2]
-        for i in range(3, amount_nodes):
+        limit = amount_links
 
-            limit = amount_links
-            network_size = AbstractNetwork.size()
+        for i in range(3, amount_nodes):
+            network_size = self.size()
             if amount_links > network_size:
                 limit = network_size
 
-            AbstractNetwork.appendNode(i)
             new_node = AbstractNetwork.getNode(self, i)
-
-            for j in range (0, limit):
-                n = random.randint(0, sorted_nodes.size())
-
-                while not new_node.hasLinkTo(n):
-                    n = random.randint(0, sorted_nodes.size())
-
+            for j in range(0, limit):
+                ns = random.randint(0, linked_nodes.__len__()-1)
+                while new_node.hasLinkTo(linked_nodes[ns]):
+                    ns = random.randint(0, linked_nodes.__len__()-1)
+                n = AbstractNetwork.getNode(self, linked_nodes[ns])
                 new_node.addLinkTo(n)
                 n.addLinkTo(new_node)
-                linked_nodes.extend(i)
-                linked_nodes.extend(n)
+                linked_nodes.append(i)
+                linked_nodes.append(linked_nodes[ns])
 
+    def getDegreeDist(self):
+        size = self.maxDegree() + 1
+        hist = [0] * size
+        for node in self.nodes:
+            i = self.nodes[node].nodelist.__len__()
+            hist[i] = hist[i] + 1
+        num = np.sum(hist)
+        return [i / num for i in hist]
+
+    def getNumLinks(self):
+        size = self.maxDegree() + 1
+        hist = [0] * size
+        for node in self.nodes:
+            i = self.nodes[node].nodelist.__len__()
+            hist[i] = hist[i] + 1
+        return np.sum(hist)

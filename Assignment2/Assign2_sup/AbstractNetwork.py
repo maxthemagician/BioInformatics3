@@ -37,6 +37,7 @@ class AbstractNetwork:
     def __str__(self):
         return "This network has %6d nodes." % (len(self.nodes))
 
+
     def getNode(self, identifier):
         """
         Returns node according to key

@@ -20,7 +20,7 @@ class Node:
         does not automatically care for a link from parameter node to this node
         """
         if (~self.hasLinkTo(node)):
-            self.nodelist.append(node)      
+            self.nodelist.append(node)
 
     def degree(self):
         """
