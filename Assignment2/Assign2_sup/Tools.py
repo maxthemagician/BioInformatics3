@@ -105,8 +105,7 @@ def plotHumanNetwork(hist):
     plt.legend(["Human"])
     plt.title("Plot 1")
     plt.tight_layout()
-    plt.show()
-    plt.savefig("Plot1")
+    plt.savefig("Plot2_1")
 
     axes = plt.gca()
     axes.set_xlim([0, 2369])
@@ -120,8 +119,7 @@ def plotHumanNetwork(hist):
     plt.legend(["Human"])
     plt.title("Plot 2")
     plt.tight_layout()
-    plt.show()
-    plt.savefig("Plot2")
+    plt.savefig("Plot2_2")
 
 
 def getPoissonDistributionHistogram(num_nodes, num_links, k):
