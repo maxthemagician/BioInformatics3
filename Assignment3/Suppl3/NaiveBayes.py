@@ -95,10 +95,14 @@ class NaiveBayes:
                 if counter_ > 3:
                     counter_ = 0
 
-        print feature_var + max_ration
+        print(feature_var + max_ration)
         return max_ration
 
 if __name__ == "__main__":
-        bayes = NaiveBayes("C:\Users\CarolinM\Desktop\BioInf\\training1.tsv")
+        bayes = NaiveBayes("training1.tsv")
         NaiveBayes.find_highest_log_ratio(bayes)
-        NaiveBayes.test(bayes, "C:\Users\CarolinM\Desktop\BioInf\\test1.tsv")
+        NaiveBayes.test(bayes, "test1.tsv")
+
+        bayes = NaiveBayes("training2.tsv")
+        NaiveBayes.find_highest_log_ratio(bayes)
+        NaiveBayes.test(bayes, "test2.tsv")
