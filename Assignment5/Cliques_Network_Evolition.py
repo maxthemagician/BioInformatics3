@@ -11,13 +11,12 @@ class Cliques_Network_Evolution(AbstractNetwork):
     def __createNetwork__(self):
 
         file = open(self.filename, "r")
-
         for line in file:
             temp = re.split(r'\t+', line)  # split line after tab
             if temp.__len__() != 2:  # if less/more than 2 elements, ignore
                 continue
             proteinA = temp[0]
-            proteinB = temp[1]
+            proteinB = temp[1].replace("\n", " ")
 
             n1 = AbstractNetwork.getNode(self, proteinA)  # node from network, according to the protein
             n2 = AbstractNetwork.getNode(self, proteinB)  # node from network, according to the proetein
@@ -28,8 +27,13 @@ class Cliques_Network_Evolution(AbstractNetwork):
 
 
     def find_cliques(self):
-        
+
+        for node in self.nodes:
+            n1 = self.getNode(node)
+            neighbours = n1.nodelist
+            print(neighbours[0])
 
 if __name__ == "__main__":
 
     network = Cliques_Network_Evolution("C:\Users\CarolinM\Desktop\Bioinf3\BioInformatics3\Assignment5\Assign5_supl\human_network.tsv")
+    Cliques_Network_Evolution.find_cliques(network)
