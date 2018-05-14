@@ -1,6 +1,6 @@
 from random import gauss
 import random as r
-import math
+import decimal as d
 from generic_network import GenericNetwork
 
 
@@ -38,41 +38,41 @@ class Layout:
         """
         Calculate the force on each node during the current iteration.
         """
-        self.total_energy = 0
+        self.total_energy = d.Decimal(0)
         for n_name in self.network.nodes:
             n1 = self.network.get_node(n_name)
-            n1.force_x = 0
-            n1.force_y = 0
+            n1.force_x = d.Decimal(0)
+            n1.force_y = d.Decimal(0)
 
-            for n1_name in self.network.nodes:
-                n1 = self.network.get_node(n1_name)
+        for n1_name in self.network.nodes:
+            n1 = self.network.get_node(n1_name)
 
-                for n2_name in self.network.nodes:
-                    if n1_name != n2_name:
-                        w = 0
-                        n2 = self.network.get_node(n2_name)
-                        if n1.has_edge_to(n2):
-                            w = 1
+            for n2_name in self.network.nodes:
+                if n1_name != n2_name:
+                    w = d.Decimal(0)
+                    n2 = self.network.get_node(n2_name)
+                    if n1.has_edge_to(n2):
+                        w = d.Decimal(1)
 
-                        delta_x = n1.pos_x - n2.pos_x
-                        delta_y = n1.pos_y - n2.pos_y
+                    delta_x = d.Decimal(n1.pos_x) - d.Decimal(n2.pos_x)
+                    delta_y = d.Decimal(n1.pos_y) - d.Decimal(n2.pos_y)
 
-                        F_h_x = -1 * delta_x
-                        F_h_y = -1 * delta_y
+                    F_h_x = d.Decimal(-1) * d.Decimal(delta_x)
+                    F_h_y = d.Decimal(-1) * d.Decimal(delta_y)
 
-                        z_x = float(delta_x * n1.degree() * n2.degree())
-                        z_y = float(delta_y * n1.degree() * n2.degree())
-                        n = ((delta_x ** 2) + (delta_y ** 2)) ** (3/2)
+                    z_x = d.Decimal(delta_x * d.Decimal(n1.degree()) * d.Decimal(n2.degree()))
+                    z_y = d.Decimal(delta_y * d.Decimal(n1.degree()) * d.Decimal(n2.degree()))
+                    n = ((delta_x ** d.Decimal(2)) + (delta_y ** d.Decimal(2))) ** d.Decimal((3/2))
 
-                        f_x =(z_x/n) + (w * F_h_x)
-                        f_y = (z_y/n) + (w * F_h_y)
+                    f_x =(z_x/n) + (w * F_h_x)
+                    f_y = (z_y/n) + (w * F_h_y)
 
-                        n1.force_x += f_x
-                        n1.force_y += f_y
+                    n1.force_x += f_x
+                    n1.force_y += f_y
 
-                        e_c = float(n1.degree() * n2.degree())/(((delta_x ** 2) + (delta_y ** 2)) ** (1/2))
-                        e_h = 0.5 * ((delta_x ** 2) + (delta_y ** 2))
-                        self.total_energy += e_c + e_h
+                    e_c = d.Decimal(d.Decimal(n1.degree()) * d.Decimal(n2.degree()))/(((delta_x ** d.Decimal(2)) + (delta_y ** d.Decimal(2))) ** d.Decimal((1/2)))
+                    e_h = d.Decimal(0.5) * ((delta_x ** d.Decimal(2)) + (delta_y ** d.Decimal(2)))
+                    self.total_energy += e_c + e_h
 
 
     def add_random_force(self, temperature):
@@ -82,8 +82,8 @@ class Layout:
         :param temperature: temperature in the current iteration
         """
         for node in self.network.nodes.values():
-            node.force_x += gauss(0.0, self.interval * temperature)
-            node.force_y += gauss(0.0, self.interval * temperature)
+            node.force_x += d.Decimal(gauss(0.0, self.interval * temperature))
+            node.force_y += d.Decimal(gauss(0.0, self.interval * temperature))
 
     def displace_nodes(self):
         """
@@ -91,8 +91,8 @@ class Layout:
         """
         for n_name in self.network.nodes:
             n = self.network.get_node(n_name)
-            n.pos_x += self.alpha * n.force_x
-            n.pos_y += self.alpha * n.force_y
+            n.pos_x += d.Decimal(self.alpha) * d.Decimal(n.force_x)
+            n.pos_y += d.Decimal(self.alpha) * d.Decimal(n.force_y)
 
     def calculate_energy(self):
         """
@@ -126,11 +126,10 @@ class Layout:
         """
         self.init_positions()
         energies = []
-        temperature = iterations
+        temperature = 100
 
         for i in range(iterations):
-            # TODO: DECREASE THE TEMPERATURE IN EACH ITERATION. YOU CAN BE CREATIVE.
-            temperature -= 1
+            temperature -= 0.1
             # there is nothing to do here for you
             self.calculate_forces()
             self.add_random_force(temperature)
@@ -138,14 +137,3 @@ class Layout:
             energies.append(self.calculate_energy())
 
         return energies
-
-
-
-if __name__ == "__main__":
-        layout = Layout("C:\Users\CarolinM\Desktop\BioInf\supplement\star.txt")
-        Layout.init_positions(layout)
-        Layout.layout(layout, 1000)
-        Layout.simulated_annealing_layout(layout, 1000)
-
-
-
