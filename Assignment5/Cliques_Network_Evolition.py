@@ -27,31 +27,44 @@ class Cliques_Network_Evolution(AbstractNetwork):
                 n2.addLinkTo(n1)
 
     def find_cliques(self):
-        cliques = [[]]
+        cliques = []
         set_nodes = list(self.nodes)
-
+        k = 0
+        l = 0
         for node in set_nodes:
+
             n1 = self.getNode(node)
-            for node2 in n1.nodelist:
-                n2 = self.getNode(node2)
 
-                print(list(set(n1.nodelist) & set(n2.nodelist)))
-                if node2 != node:
-                    for node3 in n2.nodelist:
-                        print("hier")
-                        print(node3)
+            for i in range(0, len(n1.nodelist)):
 
-                        n3 = self.getNode(node3)
-                        if n3.hasLinkTo(n1):
-                            print(found)
+                for j in range(0, len(n1.nodelist[i].nodelist)):
+                    clique_size = 0
 
+                    if n1 in n1.nodelist[i].nodelist[j].nodelist:
+                        clique_size = 3
 
+                        for k in range(0, len(n1.nodelist[i].nodelist[j].nodelist)):
 
+                            if (n1, n1.nodelist[i]) in n1.nodelist[i].nodelist[j].nodelist:
+                                clique_size = 4
 
+                                for l in range(0, len(n1.nodelist[i].nodelist[j].nodelist[k])):
+
+                                    if (n1, n1.nodelist[i], n1.nodelist[i].nodelist[j]) in n1.nodelist[i].nodelist[j].nodelist[k].nodelist:
+                                        clique_size = 5
+                                        break;
+                            break;
+
+                    if (clique_size == 3) & (sorted([str(n1),  str(n1.nodelist[i]), str(n1.nodelist[i].nodelist[j])]) not in cliques):
+                        cliques.append(sorted([str(n1),  str(n1.nodelist[i]), str(n1.nodelist[i].nodelist[j])]))
+                    if (clique_size == 4) & (sorted([str(n1), str(n1.nodelist[i]), str(n1.nodelist[i].nodelist[j]), str(n1.nodelist[i].nodelist[j].nodelist[k])]) not in cliques):
+                        cliques.append(sorted([str(n1), str(n1.nodelist[i]), str(n1.nodelist[i].nodelist[j]), str(n1.nodelist[i].nodelist[j].nodelist[k])]))
+                    if (clique_size == 5) & (sorted([str(n1), str(n1.nodelist[i]), str(n1.nodelist[i].nodelist[j]), str(n1.nodelist[i].nodelist[j].nodelist[k]), str(n1.nodelist[i].nodelist[l])]) not in cliques):
+                        cliques.append(sorted([str(n1), str(n1.nodelist[i]), str(n1.nodelist[i].nodelist[j]), str(n1.nodelist[i].nodelist[j].nodelist[k]), str(n1.nodelist[i].nodelist[j].nodelist[k].nodelist[l])]))
 
         print(cliques)
 
 if __name__ == "__main__":
     network = Cliques_Network_Evolution(
-        "C:\Users\CarolinM\Desktop\Bioinf3\BioInformatics3\Assignment5\Assign5_supl\\test.tsv")
+        "C:\Users\CarolinM\Desktop\Bioinf3\BioInformatics3\Assignment5\Assign5_supl\chicken_network.tsv")
     Cliques_Network_Evolution.find_cliques(network)
