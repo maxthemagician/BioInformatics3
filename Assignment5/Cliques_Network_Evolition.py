@@ -37,30 +37,43 @@ class Cliques_Network_Evolution(AbstractNetwork):
 
             for i in range(0, len(n1.nodelist)):
 
-                for j in range(0, len(n1.nodelist[i].nodelist)):
+                for j in range(len(n1.nodelist[i].nodelist)):
                     clique_size = 0
 
                     if n1 in n1.nodelist[i].nodelist[j].nodelist:
                         clique_size = 3
 
-                        for k in range(0, len(n1.nodelist[i].nodelist[j].nodelist)):
-
-                            if (n1, n1.nodelist[i]) in n1.nodelist[i].nodelist[j].nodelist:
+                        for k in range(len(n1.nodelist[i].nodelist[j].nodelist)):
+                            cond1 = n1 in n1.nodelist[i].nodelist[j].nodelist[k].nodelist
+                            cond2 = n1.nodelist[i] in n1.nodelist[i].nodelist[j].nodelist[k].nodelist
+                            if cond1 & cond2:
                                 clique_size = 4
 
-                                for l in range(0, len(n1.nodelist[i].nodelist[j].nodelist[k])):
-
-                                    if (n1, n1.nodelist[i], n1.nodelist[i].nodelist[j]) in n1.nodelist[i].nodelist[j].nodelist[k].nodelist:
+                                for l in range(len(n1.nodelist[i].nodelist[j].nodelist[k].nodelist)):
+                                    cond1 = n1 in n1.nodelist[i].nodelist[j].nodelist[k].nodelist[l].nodelist
+                                    cond2 = n1.nodelist[i] in n1.nodelist[i].nodelist[j].nodelist[k].nodelist[l].nodelist
+                                    cond3 = n1.nodelist[i].nodelist[j] in n1.nodelist[i].nodelist[j].nodelist[k].nodelist[l].nodelist
+                                    if cond1 & cond2 & cond3:
                                         clique_size = 5
-                                        break;
-                            break;
+                                        if sorted(
+                                                [str(n1), str(n1.nodelist[i]), str(n1.nodelist[i].nodelist[j]),
+                                                 str(n1.nodelist[i].nodelist[j].nodelist[k]), str(
+                                                        n1.nodelist[i].nodelist[j].nodelist[k].nodelist[
+                                                            l])]) not in cliques:
+                                            cliques.append(sorted(
+                                                [str(n1), str(n1.nodelist[i]), str(n1.nodelist[i].nodelist[j]),
+                                                 str(n1.nodelist[i].nodelist[j].nodelist[k]),
+                                                 str(n1.nodelist[i].nodelist[j].nodelist[k].nodelist[l])]))
+                                if (clique_size == 4) & (sorted(
+                                        [str(n1), str(n1.nodelist[i]), str(n1.nodelist[i].nodelist[j]),
+                                         str(n1.nodelist[i].nodelist[j].nodelist[k])]) not in cliques):
+                                    cliques.append(sorted(
+                                        [str(n1), str(n1.nodelist[i]), str(n1.nodelist[i].nodelist[j]),
+                                         str(n1.nodelist[i].nodelist[j].nodelist[k])]))
 
-                    if (clique_size == 3) & (sorted([str(n1),  str(n1.nodelist[i]), str(n1.nodelist[i].nodelist[j])]) not in cliques):
-                        cliques.append(sorted([str(n1),  str(n1.nodelist[i]), str(n1.nodelist[i].nodelist[j])]))
-                    if (clique_size == 4) & (sorted([str(n1), str(n1.nodelist[i]), str(n1.nodelist[i].nodelist[j]), str(n1.nodelist[i].nodelist[j].nodelist[k])]) not in cliques):
-                        cliques.append(sorted([str(n1), str(n1.nodelist[i]), str(n1.nodelist[i].nodelist[j]), str(n1.nodelist[i].nodelist[j].nodelist[k])]))
-                    if (clique_size == 5) & (sorted([str(n1), str(n1.nodelist[i]), str(n1.nodelist[i].nodelist[j]), str(n1.nodelist[i].nodelist[j].nodelist[k]), str(n1.nodelist[i].nodelist[l])]) not in cliques):
-                        cliques.append(sorted([str(n1), str(n1.nodelist[i]), str(n1.nodelist[i].nodelist[j]), str(n1.nodelist[i].nodelist[j].nodelist[k]), str(n1.nodelist[i].nodelist[j].nodelist[k].nodelist[l])]))
+
+                        if (clique_size == 3) & (sorted([str(n1),  str(n1.nodelist[i]), str(n1.nodelist[i].nodelist[j])]) not in cliques):
+                            cliques.append(sorted([str(n1),  str(n1.nodelist[i]), str(n1.nodelist[i].nodelist[j])]))
 
         print(cliques)
 
