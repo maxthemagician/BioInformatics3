@@ -44,6 +44,6 @@ class AbstractNetwork:
         """
         if identifier not in self.nodes:
             self.nodes[identifier] = Node(identifier)
-            
+
         return self.nodes[identifier]
     

@@ -81,5 +81,5 @@ class Cliques_Network_Evolution(AbstractNetwork):
 
 if __name__ == "__main__":
     network = Cliques_Network_Evolution(
-        "C:\Users\CarolinM\Desktop\Bioinf3\BioInformatics3\Assignment5\Assign5_supl\human_network.tsv")
+        "C:\Users\CarolinM\Desktop\Bioinf3\BioInformatics3\Assignment5\Assign5_supl\\rat_network.tsv")
     Cliques_Network_Evolution.find_cliques(network)
