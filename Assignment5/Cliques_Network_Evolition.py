@@ -60,6 +60,7 @@ class Cliques_Network_Evolution(AbstractNetwork):
                                                  str(n1.nodelist[i].nodelist[j].nodelist[k]), str(
                                                         n1.nodelist[i].nodelist[j].nodelist[k].nodelist[
                                                             l])]) not in cliques:
+
                                             cliques.append(sorted(
                                                 [str(n1), str(n1.nodelist[i]), str(n1.nodelist[i].nodelist[j]),
                                                  str(n1.nodelist[i].nodelist[j].nodelist[k]),
@@ -67,6 +68,7 @@ class Cliques_Network_Evolution(AbstractNetwork):
                                 if (clique_size == 4) & (sorted(
                                         [str(n1), str(n1.nodelist[i]), str(n1.nodelist[i].nodelist[j]),
                                          str(n1.nodelist[i].nodelist[j].nodelist[k])]) not in cliques):
+
                                     cliques.append(sorted(
                                         [str(n1), str(n1.nodelist[i]), str(n1.nodelist[i].nodelist[j]),
                                          str(n1.nodelist[i].nodelist[j].nodelist[k])]))
@@ -74,10 +76,10 @@ class Cliques_Network_Evolution(AbstractNetwork):
 
                         if (clique_size == 3) & (sorted([str(n1),  str(n1.nodelist[i]), str(n1.nodelist[i].nodelist[j])]) not in cliques):
                             cliques.append(sorted([str(n1),  str(n1.nodelist[i]), str(n1.nodelist[i].nodelist[j])]))
-
+        print(len(cliques))
         print(cliques)
 
 if __name__ == "__main__":
     network = Cliques_Network_Evolution(
-        "C:\Users\CarolinM\Desktop\Bioinf3\BioInformatics3\Assignment5\Assign5_supl\chicken_network.tsv")
+        "C:\Users\CarolinM\Desktop\Bioinf3\BioInformatics3\Assignment5\Assign5_supl\human_network.tsv")
     Cliques_Network_Evolution.find_cliques(network)
