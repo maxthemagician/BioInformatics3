@@ -99,6 +99,14 @@ class NetworkModification:
         return network
 
 
+    def enrichment(self, n):
+
+        cliques = Cliques_Network_Evolution.find_cliques(self.network)
+
+        for i in range(n):
+            r_network = NetworkModification.randomising(self, self.network)
+            r_cliques = Cliques_Network_Evolution.find_cliques(r_network)
+
 
 if __name__ == "__main__":
     network = Cliques_Network_Evolution(
