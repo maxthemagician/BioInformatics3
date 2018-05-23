@@ -26,14 +26,14 @@ class Cliques_Network_Evolution(AbstractNetwork):
                 n1.addLinkTo(n2)
                 n2.addLinkTo(n1)
 
-    def find_cliques(self):
+    def find_cliques(self, network):
         cliques = []
-        set_nodes = list(self.nodes)
+        set_nodes = list(network.nodes)
         k = 0
         l = 0
         for node in set_nodes:
 
-            n1 = self.getNode(node)
+            n1 = network.getNode(node)
 
             for i in range(0, len(n1.nodelist)):
 
@@ -76,10 +76,19 @@ class Cliques_Network_Evolution(AbstractNetwork):
 
                         if (clique_size == 3) & (sorted([str(n1),  str(n1.nodelist[i]), str(n1.nodelist[i].nodelist[j])]) not in cliques):
                             cliques.append(sorted([str(n1),  str(n1.nodelist[i]), str(n1.nodelist[i].nodelist[j])]))
-        print(len(cliques))
-        print(cliques)
+
+        sum_cliques = [0,0,0]
+        for i in range(len(cliques)):
+            if len(cliques[i]) == 3:
+                sum_cliques[0] = sum_cliques[0] + 1
+            if len(cliques[i]) == 4:
+                sum_cliques[1] = sum_cliques[1] + 1
+            if len(cliques[i]) == 5:
+                sum_cliques[2] = sum_cliques[2] + 1
+
+        return(sum_cliques)
 
 if __name__ == "__main__":
     network = Cliques_Network_Evolution(
         "C:\Users\CarolinM\Desktop\Bioinf3\BioInformatics3\Assignment5\Assign5_supl\chicken_network.tsv")
-    Cliques_Network_Evolution.find_cliques(network)
+    Cliques_Network_Evolution.find_cliques(network, network)

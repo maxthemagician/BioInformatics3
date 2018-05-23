@@ -28,7 +28,7 @@ class NetworkModification:
             n1 = network.nodes[set_nodes[node1]]
             n2 = network.nodes[set_nodes[node2]]
 
-        return [node1,node2]
+        return [node1, node2]
 
     def evolving(self, timesteps):
         set_nodes = list(self.network.nodes)
@@ -69,22 +69,26 @@ class NetworkModification:
 
     def randomising(self):
 
-        network = self.network
+        network_copie = self.network
         sum_edges = 0
-        set_nodes = list(network.nodes)
+        set_nodes = list(network_copie.nodes)
         for node in set_nodes:
-            n1 = network.getNode(node)
-            sum_edges =+ len(n1.nodelist)
+            n1 = network_copie.getNode(node)
+            sum_edges = sum_edges + len(n1.nodelist)
 
         for e in range(sum_edges):
 
-            nodes1 = NetworkModification.get_random_connected_nodes(self, network)
-            nodes2 = NetworkModification.get_random_connected_nodes(self, network)
+            nodes1 = NetworkModification.get_random_connected_nodes(self, network_copie)
+            nodes2 = NetworkModification.get_random_connected_nodes(self, network_copie)
 
-            n1 = network.nodes[set_nodes[nodes1[0]]]
-            n2 = network.nodes[set_nodes[nodes1[1]]]
-            n3 = network.nodes[set_nodes[nodes2[0]]]
-            n4 = network.nodes[set_nodes[nodes2[1]]]
+            while (nodes1[0] == nodes2[0]) | (nodes1[1] == nodes2[1]) | (nodes1[0] == nodes2[1]) | (nodes1[1] == nodes2[0]):
+                nodes1 = NetworkModification.get_random_connected_nodes(self, network_copie)
+                nodes2 = NetworkModification.get_random_connected_nodes(self, network_copie)
+
+            n1 = network_copie.nodes[set_nodes[nodes1[0]]]
+            n2 = network_copie.nodes[set_nodes[nodes1[1]]]
+            n3 = network_copie.nodes[set_nodes[nodes2[0]]]
+            n4 = network_copie.nodes[set_nodes[nodes2[1]]]
 
             n1.removeNode(n2)
             n2.removeNode(n1)
@@ -96,21 +100,35 @@ class NetworkModification:
             n3.addLinkTo(n2)
             n4.addLinkTo(n1)
 
-        return network
+        return network_copie
 
 
     def enrichment(self, n):
 
-        cliques = Cliques_Network_Evolution.find_cliques(self.network)
-
+        randomised_cliques = []
+        sum_enriched_networks = [0,0,0]
+        cliques = Cliques_Network_Evolution.find_cliques(self.network, self.network)
+        print("hier")
         for i in range(n):
-            r_network = NetworkModification.randomising(self, self.network)
-            r_cliques = Cliques_Network_Evolution.find_cliques(r_network)
+            r_network = NetworkModification.randomising(self)
+            r_cliques = Cliques_Network_Evolution.find_cliques(self.network, r_network)
+            randomised_cliques.append(r_cliques)
+            print(r_cliques)
 
+        print(randomised_cliques)
+
+        for i in range(len(randomised_cliques)):
+            if not randomised_cliques[i][0] < cliques[0]:
+                sum_enriched_networks[0] = 1 + sum_enriched_networks[0]
+            if not randomised_cliques[i][1] < cliques[1]:
+                sum_enriched_networks[1] = 1 + sum_enriched_networks[1]
+            if not randomised_cliques[i][2] < cliques[2]:
+                sum_enriched_networks[2] = 1 + sum_enriched_networks[2]
+        print(sum_enriched_networks)
+        return [float(sum_enriched_networks[0])/n, float(sum_enriched_networks[1])/n, float(sum_enriched_networks[2])/n]
 
 if __name__ == "__main__":
     network = Cliques_Network_Evolution(
         "C:\Users\CarolinM\Desktop\Bioinf3\BioInformatics3\Assignment5\Assign5_supl\chicken_network.tsv")
     netmod = NetworkModification(network)
-    NetworkModification.evolving(netmod, 10)
-    NetworkModification.randomising(netmod)
+    print(NetworkModification.enrichment(netmod, 10))
