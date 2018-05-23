@@ -129,6 +129,16 @@ class NetworkModification:
 
 if __name__ == "__main__":
     network = Cliques_Network_Evolution(
-        "C:\Users\CarolinM\Desktop\Bioinf3\BioInformatics3\Assignment5\Assign5_supl\chicken_network.tsv")
+        "C:\Users\CarolinM\Desktop\Bioinf3\BioInformatics3\Assignment5\Assign5_supl\\rat_network.tsv")
+    print(Cliques_Network_Evolution.find_cliques(network, network))
+    ev_network = NetworkModification(network)
+    NetworkModification.evolving(ev_network, 100)
+    print(Cliques_Network_Evolution.find_cliques(network, ev_network.network))
+    ev2_network = NetworkModification(network)
+    NetworkModification.evolving(ev2_network, 1000)
+    print(Cliques_Network_Evolution.find_cliques(network, ev2_network.network))
+
+    network = Cliques_Network_Evolution(
+        "C:\Users\CarolinM\Desktop\Bioinf3\BioInformatics3\Assignment5\Assign5_supl\\rat_network.tsv")
     netmod = NetworkModification(network)
-    print(NetworkModification.enrichment(netmod, 10))
+    print(NetworkModification.enrichment(netmod, 100))
