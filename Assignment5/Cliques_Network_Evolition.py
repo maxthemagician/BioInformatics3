@@ -92,4 +92,4 @@ if __name__ == "__main__":
     network = Cliques_Network_Evolution(
         "C:\Users\CarolinM\Desktop\Bioinf3\BioInformatics3\Assignment5\Assign5_supl\chicken_network.tsv")
     print(Cliques_Network_Evolution.find_cliques(network, network))
-    
+
