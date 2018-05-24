@@ -21,11 +21,11 @@ class GenericNetwork(AbstractNetwork):
             temp = re.split(r'\t+', line)   # split line after tab
             if (temp.__len__() < 2):        # if less than 2 elements, ignore
                 continue
-            geneA = temp[1]                 # gene, part of all following interactions
+            geneA = temp[0].rstrip()                 # gene, part of all following interactions
             n1 = AbstractNetwork.getNode(self, geneA)   # node from network, according to the gene
-            for i in range(2, temp.__len__()):          # iterate over all genes in list, add all links to the network
+            for i in range(1, temp.__len__()):          # iterate over all genes in list, add all links to the network
                 # can use getNode(), as it adds a new node automatically if node is not in network yet
-                ntemp = AbstractNetwork.getNode(self, temp[i])
+                ntemp = AbstractNetwork.getNode(self, temp[i].rstrip())
                 if(n1.id == ntemp.id):                            # not self links allowed
                     continue
                 if not (n1.hasLinkTo(ntemp)):                     # add link

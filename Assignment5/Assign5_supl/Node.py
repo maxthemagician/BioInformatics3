@@ -6,6 +6,7 @@ class Node:
         """
         self.id = identifier
         self.nodelist = []
+        self.go_terms = []
         
     def hasLinkTo(self, node):
         """
@@ -39,3 +40,6 @@ class Node:
 
     def removeNode(self,node):
         self.nodelist.remove(node)
+
+    def addGO(self, term):
+        self.go_terms.append(term)

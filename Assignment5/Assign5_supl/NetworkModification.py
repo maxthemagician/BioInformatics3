@@ -155,6 +155,15 @@ def plotNetwork(data):
 
 if __name__ == "__main__":
 
+
+
+    # enrichment, may take time
+    print('Start enrichment, this will take for ever ... \n')
+    network = Cliques_Network_Evolution("chicken_network.tsv")
+    netmod = NetworkModification(network)
+    print(NetworkModification.enrichment(netmod, 100))
+
+
     # evolution
     print('Start Network evolving ...')
     network = Cliques_Network_Evolution("rat_network.tsv")
@@ -172,13 +181,6 @@ if __name__ == "__main__":
     ev2_network = NetworkModification(network)
     NetworkModification.evolving(ev2_network, 1000)
     print(Cliques_Network_Evolution.find_cliques(network, ev2_network.network))
-
-
-    # enrichment, may take time
-    print('Start enrichment, this will take for ever ... \n')
-    network = Cliques_Network_Evolution("chicken_network.tsv")
-    netmod = NetworkModification(network)
-    print(NetworkModification.enrichment(netmod, 100))
 
 
 
