@@ -1,4 +1,6 @@
 from GenericNetwork import GenericNetwork
+import decimal as d
+from operator import itemgetter
 
 
 def create_mapping_uniprot(file):
@@ -196,15 +198,79 @@ def getMostLeast(net, k):
 
 def binomial(n, k):
     if 0 <= k <= n:
-        ntok = 1
-        ktok = 1
+        ntok = d.Decimal(1)
+        ktok = d.Decimal(1)
         for t in range(1, min(k, n - k) + 1):
-            ntok *= n
-            ktok *= t
-            n -= 1
-        return ntok // ktok
+            ntok *= d.Decimal(n)
+            ktok *= d.Decimal(t)
+            n -= d.Decimal(1)
+        return ntok / ktok
     else:
-        return 0
+        return d.Decimal(0)
+
+
+def computeProb(N, n, ka, KA):
+    c = binomial(N,n)
+    res = 0
+    for i in range(ka, min(KA,n)+1):
+        res += binomial(KA, i) * binomial(N-KA, n-i)
+    return (res/c)
+
+
+def computeEnrichment(net):
+    N = binomial(net.nodes.__len__(),2)
+    interaction = 0
+    unique_GO = set()
+
+    for i in net.nodes:
+        n = net.getNode(i)
+        interaction += n.degree()
+        for j in n.go_terms:
+            unique_GO.add(j)
+
+    n_total = int(interaction/2)
+    total = []
+    for t in unique_GO:    # ugly but works
+        match = 0
+        match_inter = 0
+        for i in net.nodes:
+            n = net.getNode(i)
+            if t in n.go_terms:
+                for j in net.nodes:
+                    n2 = net.getNode(j)
+                    if n != n2:
+                        if t in n2.go_terms:
+                            match += 1
+                            if n.hasLinkTo(n2):
+                                match_inter += 1
+            else:
+                continue
+        total.append([t,computeProb(N,n_total,match_inter, match)])
+
+    total.sort(key=itemgetter(1))
+    small = 0
+    medium = 0
+    large = 0
+    for i in total:
+        if i[1] < d.Decimal(0.05):
+            small += 1
+        else:
+            if (i[1] < d.Decimal(0.95)) and (i[1] > d.Decimal(0.5)):
+                medium += 1
+            else:
+                if i[1] > d.Decimal(0.95):
+                    large += 1
+
+    all = total.__len__()
+    print(small, small/all *100)
+    print(medium, medium/all*100)
+    print(large, large/all*100)
+
+    for i in range(5):  # report the 5 most enriched annotations
+        print(total[i])
+
+    for i in range(5): # the five least enriched
+        print(total[total.__len__()-i-1])
 
 
 def main():
@@ -219,6 +285,9 @@ def main():
         if(i == 2):     # at humans
             getMostLeast(net, 5)
 
+    print('Output for GO term enrichment: ')
+    net = workflow(net_files[0], GO_files[0], uniprot_files[0])
+    computeEnrichment(net)
 
 if __name__ == '__main__':
     main()
