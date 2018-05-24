@@ -1,8 +1,7 @@
-from AbstractNetwork import AbstractNetwork
-from RandomNetwork import RandomNetwork
-from  Cliques_Network_Evolition import Cliques_Network_Evolution
-import re
-import random # you will need it :-)
+import random
+
+import matplotlib.pyplot as plt
+from Cliques_Network_Evolution import Cliques_Network_Evolution
 
 
 class NetworkModification:
@@ -33,6 +32,8 @@ class NetworkModification:
     def evolving(self, timesteps):
         set_nodes = list(self.network.nodes)
         network_size = len(self.network.nodes)-1
+
+        result = []
 
         for i in range(timesteps):
 
@@ -72,6 +73,7 @@ class NetworkModification:
         network_copie = self.network
         sum_edges = 0
         set_nodes = list(network_copie.nodes)
+
         for node in set_nodes:
             n1 = network_copie.getNode(node)
             sum_edges = sum_edges + len(n1.nodelist)
@@ -80,7 +82,6 @@ class NetworkModification:
 
             nodes1 = NetworkModification.get_random_connected_nodes(self, network_copie)
             nodes2 = NetworkModification.get_random_connected_nodes(self, network_copie)
-
             while (nodes1[0] == nodes2[0]) | (nodes1[1] == nodes2[1]) | (nodes1[0] == nodes2[1]) | (nodes1[1] == nodes2[0]):
                 nodes1 = NetworkModification.get_random_connected_nodes(self, network_copie)
                 nodes2 = NetworkModification.get_random_connected_nodes(self, network_copie)
@@ -100,6 +101,13 @@ class NetworkModification:
             n3.addLinkTo(n2)
             n4.addLinkTo(n1)
 
+        sum_edges = 0
+        set_nodes = list(network_copie.nodes)
+
+        for node in set_nodes:
+            n1 = network_copie.getNode(node)
+            sum_edges = sum_edges + len(n1.nodelist)
+
         return network_copie
 
 
@@ -108,12 +116,14 @@ class NetworkModification:
         randomised_cliques = []
         sum_enriched_networks = [0,0,0]
         cliques = Cliques_Network_Evolution.find_cliques(self.network, self.network)
-        print("hier")
         for i in range(n):
+            val = int(i/n * 100)
+            print(val.__str__() + '%', end='\r')
             r_network = NetworkModification.randomising(self)
             r_cliques = Cliques_Network_Evolution.find_cliques(self.network, r_network)
             randomised_cliques.append(r_cliques)
-            print(r_cliques)
+            #print(r_cliques)
+        print('100%')
 
         print(randomised_cliques)
 
@@ -127,18 +137,50 @@ class NetworkModification:
         print(sum_enriched_networks)
         return [float(sum_enriched_networks[0])/n, float(sum_enriched_networks[1])/n, float(sum_enriched_networks[2])/n]
 
+def plotNetwork(data):
+    axes = plt.gca()
+    axes.set_xlim([0, 100])
+    plt.plot(data, marker='x')
+
+    # remember: never forget labels!
+    plt.xlabel('time')
+    plt.ylabel('#cliques')
+
+    # you don't have to do something stuff here
+    plt.legend(["3", "4", "5"])
+    plt.title("Plot 1")
+    plt.tight_layout()
+    plt.savefig("Plot_1.png")
+
+
 if __name__ == "__main__":
-    network = Cliques_Network_Evolution(
-        "C:\Users\CarolinM\Desktop\Bioinf3\BioInformatics3\Assignment5\Assign5_supl\\rat_network.tsv")
+
+    # evolution
+    print('Start Network evolving ...')
+    network = Cliques_Network_Evolution("rat_network.tsv")
     print(Cliques_Network_Evolution.find_cliques(network, network))
     ev_network = NetworkModification(network)
-    NetworkModification.evolving(ev_network, 100)
-    print(Cliques_Network_Evolution.find_cliques(network, ev_network.network))
+    res = []
+    # compute cliques for first 100 time steps
+    for i in range(100):
+        print(i.__str__() + '%', end='\r')
+        NetworkModification.evolving(ev_network, 1)
+        res.append(Cliques_Network_Evolution.find_cliques(network, ev_network.network))
+    print('100%')
+    plotNetwork(res)
+    print(res[99])
     ev2_network = NetworkModification(network)
     NetworkModification.evolving(ev2_network, 1000)
     print(Cliques_Network_Evolution.find_cliques(network, ev2_network.network))
 
-    network = Cliques_Network_Evolution(
-        "C:\Users\CarolinM\Desktop\Bioinf3\BioInformatics3\Assignment5\Assign5_supl\\rat_network.tsv")
+
+    # enrichment, may take time
+    print('Start enrichment, this will take for ever ... \n')
+    network = Cliques_Network_Evolution("chicken_network.tsv")
     netmod = NetworkModification(network)
     print(NetworkModification.enrichment(netmod, 100))
+
+
+
+
+

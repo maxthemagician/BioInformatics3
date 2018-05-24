@@ -35,6 +35,21 @@ def create_mapping_uniprot(file):
     return [mapping_u_gl, mapping_g_ul]
 
 
+def findGoTerms(file):
+    goterms = {}
+    f = open(file, 'r')
+    for line in f:
+        if line.__len__() == 0:
+            continue
+        if not line.startswith('UniProtKB'):
+            continue
+        line = line.split('\t')
+        if line[7] != 'P':
+            continue
+        term = line[3]
+        gene = line[2]
+        goterms[gene] = term
+    return goterms
 
 
 
@@ -51,13 +66,14 @@ def main():
     # read network
     print("create network ...")
     net = GenericNetwork(net_file)
+
+    # create mapping
     print("create Map ...")
     map = create_mapping_uniprot(uniprot_file)
     geneMap = map[1] # mapping from uniprot to gene name
     uniprotMap = map[0] # mapping from gene to uniprot id
-    print(geneMap.keys())
-    print(uniprotMap.keys())
-
+    GO_terms = findGoTerms(GO_file)
+    print(GO_terms)
 
 if __name__ == '__main__':
     main()
