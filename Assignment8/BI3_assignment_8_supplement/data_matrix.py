@@ -72,3 +72,10 @@ class DataMatrix:
         the rows in lexicographical order.
         :param file_path: path to the output file
         """
+        dict_row_sorted = sorted(self.dict_row)
+        file = open(file_path, 'w')
+        list_of_lines = [' ' + '\t'.join(self.dict_col.keys())]
+        for i in range(len(self.dict_row)):
+            line = dict_row_sorted[i] + '\t' + ('\t'.join([str(x) for x in self.dict_row[dict_row_sorted[i]]]))
+            list_of_lines.append(line)
+        file.write("\n".join(list_of_lines))
