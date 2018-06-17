@@ -26,7 +26,7 @@ for(i in 1:length(org_dat)){    # replace missing entries with new entries from 
   }
 }
 
-hist(org_dat, col = "Green", xlab = "Expression Value") # plot complete new distipution with imputed values in green
+hist(org_dat, col = "Green", xlab = "Expression Value", main = "Data Distribution") # plot complete new distipution with imputed values in green
 hist(c1, col = "Blue", add = T)                         # add inital distribution in blue
 hist(as.numeric(filles), col = "Red", add=T)            # add dist of imputed values
 
