@@ -32,9 +32,12 @@ class DataMatrix:
             if i > 0:
                 if all(str(x).strip('-').replace('.', '').isdigit() and x != '' for x in temp[1:len(temp)]):
                     row = map(float, temp[1:len(temp)])
-                    if temp[0] in self.dict_row.keys(): self.dict_row[temp[0]] = [((x + y) / 2) for x, y in zip(self.dict_row[temp[0]], row)]
-                    else:   self.dict_row[temp[0]] = row
-                    for j in range(len(colnames)):  self.dict_col[colnames[j]].append(self.dict_row[temp[0]][j])
+                    if temp[0] in self.dict_row.keys():
+                        self.dict_row[temp[0]] = [((x + y) / 2) for x, y in zip(self.dict_row[temp[0]], row)]
+                    else:
+                        self.dict_row[temp[0]] = row
+                    for j in range(len(colnames)):
+                        self.dict_col[colnames[j]].append(self.dict_row[temp[0]][j])
 
     def get_rows(self):
         """

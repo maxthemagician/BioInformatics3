@@ -5,8 +5,12 @@ from cluster import CorrelationClustering
 
 
 def exercise_1():
-    # TODO
-    pass
+
+    met = DataMatrix("expression.tsv")
+    met.to_tsv("Jakob_Mayer_expression.tsv")
+
+    met = DataMatrix("methylation.tsv")
+    met.to_tsv("Jakob_Mayer_methylation.tsv")
 
 
 def exercise_3():
